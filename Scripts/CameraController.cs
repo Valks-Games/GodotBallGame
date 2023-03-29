@@ -26,8 +26,8 @@ public partial class CameraController : SpringArm3D
 
 			var rot = Rotation;
 			rot.Y = -amount.X * 0.01f; // horizontal
-			rot.X = -amount.Y * 0.01f; // vertical
-			GD.Print(rot.Y);
+			rot.X = Mathf.Clamp(-amount.Y * 0.01f, -Mathf.Pi / 2, 0.1f); // vertical
+			
 			Rotation = rot;
 		}
 	}
