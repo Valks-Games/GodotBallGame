@@ -1,36 +1,33 @@
 namespace BallGame;
 
-public partial class CameraController : Camera3D
+public partial class CameraController : SpringArm3D
 {
 	[Export] public NodePath NodePathPlayer { get; set; }
 
-	private Player Player { get; set; }
-	private Vector3 Offset { get; set; }
+	//private Player Player { get; set; }
+	//private Vector3 Offset { get; set; }
 
 	private Vector2 MiddleClickedPos { get; set; }
 	private bool HoldingMiddleClick { get; set; }
 
+	private Vector3 PrevRot { get; set; }
+
 	public override void _Ready()
 	{
-		Player = GetNode<Player>(NodePathPlayer);
-		Offset = Position - Player.Position;
+		//Player = GetNode<Player>(NodePathPlayer);
+		//Offset = Position - Player.Position;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Position = Player.Position + Offset;
-
 		if (HoldingMiddleClick)
 		{
-			// yeah idk what im doing lol
-			// something like a 3rd person camera controller
-			// trying to do that
-			var rotAmount = GetViewport().GetMousePosition() - MiddleClickedPos;
-			rotAmount /= 1000;
+			var amount = GetViewport().GetMousePosition() - MiddleClickedPos;
 
 			var rot = Rotation;
-			rot.X += rotAmount.X;
-			rot.Z += rotAmount.Y;
+			rot.Y = -amount.X * 0.01f; // horizontal
+			rot.X = -amount.Y * 0.01f; // vertical
+			GD.Print(rot.Y);
 			Rotation = rot;
 		}
 	}

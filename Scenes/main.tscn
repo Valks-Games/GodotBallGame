@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://caj6fdobh1ynk"]
+[gd_scene load_steps=12 format=3 uid="uid://caj6fdobh1ynk"]
 
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="1_4cw1o"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_ds8rj"]
@@ -17,7 +17,11 @@ material = SubResource("StandardMaterial3D_j0jqe")
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uc2vs"]
 data = PackedVector3Array(0, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5ie7"]
+albedo_texture = ExtResource("2_y7ebs")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_rl5e7"]
+material = SubResource("StandardMaterial3D_u5ie7")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_yim6v"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
@@ -27,14 +31,8 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.87462, -0.325029, -0.359717, 0, -0.741976, 0.670427, -0.48481, 0.586369, 0.648947, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.5, 0)
-current = true
-script = ExtResource("1_4cw1o")
-NodePathPlayer = NodePath("../Player")
-
 [node name="Player" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.32015, 0)
 script = ExtResource("1_ds8rj")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
@@ -42,6 +40,16 @@ mesh = SubResource("SphereMesh_a287s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("SphereShape3D_1hxq1")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player"]
+top_level = true
+spring_length = 4.0
+margin = 0.1
+script = ExtResource("1_4cw1o")
+
+[node name="Camera3D" type="Camera3D" parent="Player/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.72278)
+current = true
 
 [node name="Ramp" type="MeshInstance3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 2, 4, 0.5, 0)
@@ -60,3 +68,12 @@ mesh = SubResource("PlaneMesh_rl5e7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_yim6v")
+
+[node name="Ramp2" type="MeshInstance3D" parent="."]
+transform = Transform3D(3.99887, 0.0237342, 0, -0.094937, 0.999718, 0, 0, 0, 2, 4, 5.44097, 0)
+mesh = SubResource("PrismMesh_dhou0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ramp2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_uc2vs")
